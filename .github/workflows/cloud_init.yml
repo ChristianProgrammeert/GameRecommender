@@ -3,9 +3,9 @@ name:
   Cloud Deployment
 on:
   push:
-    branches: [ "development" ]
+    branches: [ "main" ]
   pull_request:
-    branches: [ "development" ]
+    branches: [ "main" ]
 
 permissions:
   contents: read
