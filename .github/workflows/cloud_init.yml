@@ -20,5 +20,5 @@ jobs:
           echo "${{ secrets.CLOUD_PASSWORD }}" | docker login -u "${{ secrets.CLOUD_EMAIL}}" --password-stdin registry.digitalocean.com
       - name: Building container
         run: |
-          docker build -t registry.digitalocean.com/game-recommender/gameapi: Release algoritmes
-          docker push registry.digitalocean.com/game-recommender/gameapi: Release
+          docker build -t registry.digitalocean.com/game-recommender/gameapi:Release .
+          docker push registry.digitalocean.com/game-recommender/gameapi:Release
