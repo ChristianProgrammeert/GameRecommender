@@ -5,7 +5,7 @@ app = FastAPI()
 try:
     db_connection = psycopg2.connect(
     database="game_recommender_db",
-    user="do_admin",
+    user="doadmin",
     password="AVNS_Z8a5xRd6XwRSreQr7QI",
     host="game-recommender-api-do-user-18910148-0.l.db.ondigitalocean.com",
     port="25060"
