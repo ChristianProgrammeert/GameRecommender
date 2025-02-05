@@ -1,14 +1,23 @@
+from dotenv import load_dotenv
 from fastapi import FastAPI
 import psycopg2
+import dotenv
+import os
 app = FastAPI()
+load_dotenv()
+DB_PASSWORD = os.getenv('DB_PASSWORD')
+DB_USER = os.getenv('DB_USER')
+DB_HOST = os.getenv('DB_HOST')
+DB_NAME = os.getenv('DB_NAME')
+DB_PORT = os.getenv('DB_PORT')
 
 try:
     db_connection = psycopg2.connect(
-    database="game_recommender_db",
-    user="doadmin",
-    password="AVNS_Z8a5xRd6XwRSreQr7QI",
-    host="game-recommender-api-do-user-18910148-0.l.db.ondigitalocean.com",
-    port="25060"
+    database=DB_NAME,
+    user=DB_USER,
+    password=DB_PASSWORD,
+    host=DB_HOST,
+    port= DB_PORT
 
 )
     print("Database connection established")
