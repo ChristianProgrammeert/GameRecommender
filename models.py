@@ -29,7 +29,7 @@ class Genre(Base):
     games = relationship("Game", secondary="games_genre", back_populates="genres")
 
 class GameGenre(Base):
-    __tablename__ = 'games_genre'
+    __tablename__ = 'games_genres'
 
     id = Column(Integer, primary_key=True)
     game_id = Column(Integer, ForeignKey('games.id', ondelete='CASCADE'))
