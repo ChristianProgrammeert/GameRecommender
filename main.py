@@ -1,10 +1,5 @@
-from queries import *
-
+from fastapi import FastAPI
 app = FastAPI()
-
-
-
-
 
 
 @app.get("/")
