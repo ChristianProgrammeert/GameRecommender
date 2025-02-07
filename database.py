@@ -21,13 +21,13 @@ try:
     engine = create_engine(DATABASE_URL)
     if engine is not None:
         print("Connected to database")
-    session = sessionmaker(autocommit=False, autoflush=False, bind=engine)
-    session = session()
-    Base.metadata.create_all(engine)
+        session = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+        session = session()
+        Base.metadata.create_all(engine)
 
-    inspector = inspect(engine)
-    tables = inspector.get_table_names()
-    print("Created Tables:", tables)
+        inspector = inspect(engine)
+        tables = inspector.get_table_names()
+        print("Existing Tables:", tables)
 
 except Exception as e:
     print("we ran into a problem: " + str(e))
