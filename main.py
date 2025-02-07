@@ -3,4 +3,4 @@ app = FastAPI()
 
 @app.get("/")
 def read_root():
-    return {"message": "Welkom bij GameRecommender"}
+    return {"message": "Hello World"}
