@@ -3,9 +3,9 @@ import os
 
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
+from sqlalchemy import inspect
 
 from models import Base
-from sqlalchemy import inspect
 
 load_dotenv()
 DB_PASSWORD = os.getenv('DB_PASSWORD')
@@ -21,7 +21,8 @@ try:
     engine = create_engine(DATABASE_URL)
     if engine is not None:
         print("Connected to database")
-    SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+    session = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+    session = session()
     Base.metadata.create_all(engine)
 
     inspector = inspect(engine)
@@ -30,3 +31,5 @@ try:
 
 except Exception as e:
     print("we ran into a problem: " + str(e))
+
+
