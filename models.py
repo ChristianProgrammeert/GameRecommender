@@ -14,7 +14,7 @@ class Game(Base):
     length_in_hours = Column(Integer)
     description = Column(String(255), nullable=True)
 
-    genres = relationship("Genre", secondary="games_genre", back_populates="games")
+    genres = relationship("Genre", secondary="games_genres", back_populates="games")
 
 class Genre(Base):
     __tablename__ = 'genres'
@@ -26,7 +26,7 @@ class Genre(Base):
     multiplayer = Column(Boolean, default=False)
     description = Column(String(255), nullable=True)
 
-    games = relationship("Game", secondary="games_genre", back_populates="genres")
+    games = relationship("Game", secondary="games_genres", back_populates="genres")
 
 class GameGenre(Base):
     __tablename__ = 'games_genres'
