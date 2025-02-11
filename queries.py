@@ -26,5 +26,9 @@ def get_games(db):
     return games
 
 def compute_genres(genres):
-    print("computing genres")
-    return [genre.name for genre in genres]
+    result = []
+    for  genre in genres:
+        if "a" in genre.name:
+            genre.name = genre.name.lower()
+            result.append(genre.name)
+    return result

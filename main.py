@@ -17,7 +17,7 @@ def read_root(db: Session = Depends(get_db)):
     genres = get_genres(db)
     games = get_games(db)
     titles = compute_genres(genres)
-    return {"message": "Hey World",
+    return {"message": "ello World",
             "genres": genres,
             "games": games,
             "names": titles}
