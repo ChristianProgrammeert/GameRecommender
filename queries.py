@@ -18,11 +18,13 @@ def get_db():
 def get_genres(db):
     print("getting genres")
     genres = db.query(Genre).all()
-    return{"data": genres}
+    return genres
 
 @app.get("/games")
 def get_games(db):
     games = db.query(Game).all()
-    if len(games) == 0:
-        print("data not found")
-    return {"data": games}
+    return games
+
+def compute_genres(genres):
+    print("computing genres")
+    return [genre.name for genre in genres]
