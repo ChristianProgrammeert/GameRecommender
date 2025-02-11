@@ -3,7 +3,9 @@ from fastapi import FastAPI, Depends
 from database import SessionLocal
 from models import Genre, Game
 
-
+rage = False
+multiplay = False
+action_pack = True
 app = FastAPI()
 # Dependency to get DB session
 def get_db():
@@ -16,7 +18,6 @@ def get_db():
 
 @app.get("/genres")
 def get_genres(db):
-    print("getting genres")
     genres = db.query(Genre).all()
     return genres
 
@@ -28,7 +29,7 @@ def get_games(db):
 def compute_genres(genres):
     result = []
     for  genre in genres:
-        if "a" in genre.name:
+        if genre.rage_inducing == rage and genre.multiplayer == multiplay and genre.action_packed == action_pack:
             genre.name = genre.name.lower()
             result.append(genre.name)
     return result
