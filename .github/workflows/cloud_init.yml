@@ -1,6 +1,5 @@
+name: Cloud Deployment
 
-name:
-  Cloud Deployment
 on:
   push:
     branches: [ "development" ]
@@ -11,14 +10,31 @@ permissions:
   contents: read
 
 jobs:
-  publish:
+  deploy:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
+      - name: Install doctl
+        run: |
+          curl -sL https://github.com/digitalocean/doctl/releases/latest/download/doctl-$(uname -s)-$(uname -m) > doctl
+          chmod +x doctl
+          sudo mv doctl /usr/local/bin/
+
+      - name: Authenticate doctl
+        run: doctl auth init --access-token ${{ secrets.CLOUD_API_TOKEN }}
+
+      - name: Retrieve Kubeconfig
+        run: doctl kubernetes cluster kubeconfig save my-k8s-cluster
+
       - name: DigitalOcean Container Registry Login
-        run:
-          echo "${{ secrets.CLOUD_PASSWORD }}" | docker login -u "${{ secrets.CLOUD_EMAIL}}" --password-stdin registry.digitalocean.com
-      - name: Building container
+        run: |
+          echo "${{ secrets.CLOUD_PASSWORD }}" | docker login -u "${{ secrets.CLOUD_EMAIL }}" --password-stdin registry.digitalocean.com
+
+      - name: Build and Push Docker Image
         run: |
           docker build -t registry.digitalocean.com/game-recommender/gameapi:Release .
           docker push registry.digitalocean.com/game-recommender/gameapi:Release
+
+      - name: Deploy to Kubernetes
+        run: kubectl apply -f k8s/deployment.yml
