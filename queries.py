@@ -32,6 +32,10 @@ def get_games(db):
     games = db.query(Game).all()
     return games
 
+def get_connectiontbl(db):
+    connectiontbl = db.query(GameGenre).all()
+    return connectiontbl
+
 def compute_genres(genres):
     result = []
     for  genre in genres:

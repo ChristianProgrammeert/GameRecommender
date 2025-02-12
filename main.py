@@ -19,9 +19,11 @@ def read_root(db: Session = Depends(get_db)):
     games = get_games(db)
     names = compute_genres(genres)
     titles = compute_games(games)
+    connections = get_connectiontbl(db)
     return {"message": "hello World",
             "genres": genres,
             "games": games,
             "names": names,
-            "titles": titles}
+            "titles": titles,
+            "connections": connections}
 
