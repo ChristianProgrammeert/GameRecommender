@@ -13,28 +13,29 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout Repository
+        uses: actions/checkout@v4
 
       - name: Install doctl
         run: |
-          sudo apt-get update
-          sudo apt-get install -y doctl
+          sudo snap install doctl
+          sudo snap connect doctl:kube-config
+          sudo snap connect doctl:ssh-keys
+          sudo snap connect doctl:dot-docker
           doctl version
 
-      - name: Authenticate doctl
-        run: doctl auth init --access-token ${{ secrets.CLOUD_API_TOKEN }}
+      - name: Authenticate with DigitalOcean
+        run: |
+          mkdir -p ~/.config
+          doctl auth init --context default --access-token ${{ secrets.CLOUD_API_TOKEN }}
 
-      - name: Retrieve Kubeconfig
-        run: doctl kubernetes cluster kubeconfig save my-k8s-cluster
+      - name: Verify Authentication
+        run: doctl account get
 
       - name: DigitalOcean Container Registry Login
-        run: |
-          echo "${{ secrets.CLOUD_PASSWORD }}" | docker login -u "${{ secrets.CLOUD_EMAIL }}" --password-stdin registry.digitalocean.com
+        run: doctl registry login
 
-      - name: Build and Push Docker Image
+      - name: Build & Push Docker Image
         run: |
           docker build -t registry.digitalocean.com/game-recommender/gameapi:Release .
           docker push registry.digitalocean.com/game-recommender/gameapi:Release
-
-      - name: Deploy to Kubernetes
-        run: kubectl apply -f k8s/deployment.yml
