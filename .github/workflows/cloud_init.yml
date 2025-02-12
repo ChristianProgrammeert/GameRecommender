@@ -17,9 +17,9 @@ jobs:
 
       - name: Install doctl
         run: |
-          curl -sL https://github.com/digitalocean/doctl/releases/latest/download/doctl-$(uname -s)-$(uname -m) > doctl
-          chmod +x doctl
-          sudo mv doctl /usr/local/bin/
+          sudo apt-get update
+          sudo apt-get install -y doctl
+          doctl version
 
       - name: Authenticate doctl
         run: doctl auth init --access-token ${{ secrets.CLOUD_API_TOKEN }}
