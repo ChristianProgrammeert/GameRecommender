@@ -13,12 +13,15 @@ def endpoint_games(db: Session = Depends(get_db)):
     return {"data":games}
 
 @app.get("/")
+
 def read_root(db: Session = Depends(get_db)):
     genres = get_genres(db)
     games = get_games(db)
-    titles = compute_genres(genres)
-    return {"message": "ello World",
+    names = compute_genres(genres)
+    titles = compute_games(games)
+    return {"message": "hello World",
             "genres": genres,
             "games": games,
-            "names": titles}
+            "names": names,
+            "titles": titles}
 
