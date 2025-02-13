@@ -2,8 +2,8 @@ from dotenv import load_dotenv
 import os
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from models import Base
 from sqlalchemy import inspect
+from models import Base
 
 load_dotenv()
 DB_PASSWORD = os.getenv('DB_PASSWORD')
@@ -19,12 +19,14 @@ try:
     engine = create_engine(DATABASE_URL)
     if engine is not None:
         print("Connected to database")
-    SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
-    Base.metadata.create_all(engine)
+        SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+        Base.metadata.create_all(engine)
 
-    inspector = inspect(engine)
-    tables = inspector.get_table_names()
-    print("Created Tables:", tables)
+        inspector = inspect(engine)
+        tables = inspector.get_table_names()
+        print("Existing Tables:", tables)
 
 except Exception as e:
     print("we ran into a problem: " + str(e))
+
+
