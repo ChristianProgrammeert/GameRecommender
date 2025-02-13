@@ -29,13 +29,15 @@ jobs:
           mkdir -p ~/.config
           doctl auth init --context default --access-token ${{ secrets.CLOUD_API_TOKEN }}
 
-      - name: Verify Authentication
-        run: doctl account get
+      - name: Create Container Registry (if it does not exist)
+        run: |
+          doctl registry get game-recommender || doctl registry create game-recommender --region ams3
+
 
       - name: DigitalOcean Container Registry Login
         run: doctl registry login
 
       - name: Build & Push Docker Image
         run: |
-          docker build -t registry.digitalocean.com/game-recommender/gameapi:Release .
-          docker push registry.digitalocean.com/game-recommender/gameapi:Release
+          docker build -t registry.digitalocean.com/game-recommender/gameapi:latest .
+          docker push registry.digitalocean.com/game-recommender/gameapi:latest
