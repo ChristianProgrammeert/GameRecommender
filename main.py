@@ -1,5 +1,6 @@
 from queries import *
 from sqlalchemy.orm import Session
+from fastapi import FastAPI, Depends
 
 app = FastAPI()
 
@@ -20,10 +21,6 @@ def read_root(db: Session = Depends(get_db)):
     names = compute_genres(genres)
     titles = compute_games(games)
     connections = get_connectiontbl(db)
-    return {"message": "hello World",
-            "genres": genres,
-            "games": games,
-            "names": names,
-            "titles": titles,
-            "connections": connections}
+    connie = link_gamesgenres(titles, names, connections, db)
+    return {"pairs": connie}
 

@@ -1,7 +1,4 @@
-from pickle import FALSE
-
-from dotenv import load_dotenv
-from fastapi import FastAPI, Depends
+from fastapi import FastAPI
 from database import SessionLocal
 from models import Genre, Game, GameGenre
 
@@ -41,7 +38,7 @@ def compute_genres(genres):
     for  genre in genres:
         if genre.rage_inducing == rage and genre.multiplayer == multiplay and genre.action_packed == action_pack:
             genre.name = genre.name.lower()
-            result.append(genre.name)
+            result.append(genre)
     return result
 
 def compute_games(games):
@@ -49,5 +46,20 @@ def compute_games(games):
     for game in games:
         if game.open_world == open_world and game.mature_themes == mature and game.skill_based == skill_based and game.length_in_hours <= length:
             game.name = game.name.lower()
-            result.append(game.name)
+            result.append(game)
     return result
+
+def link_gamesgenres(titles, names, connectiontbl, db):
+    result = {}
+    for genre in names:
+        game_list = []
+        for connection in connectiontbl:
+            if connection.genre_id == genre.id:
+                game_id = connection.game_id
+                for game in titles:
+                    if game.id == game_id:
+                        game_list.append(game.name)
+        result[genre.name] = game_list
+    return result
+
+
