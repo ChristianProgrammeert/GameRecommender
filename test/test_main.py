@@ -1,4 +1,4 @@
-from GameRecommender import main
+import main
 import unittest
 
 class MainTest(unittest.TestCase):
