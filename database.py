@@ -19,8 +19,7 @@ try:
     engine = create_engine(DATABASE_URL)
     if engine is not None:
         print("Connected to database")
-        session = sessionmaker(autocommit=False, autoflush=False, bind=engine)
-        session = session()
+        SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
         Base.metadata.create_all(engine)
 
         inspector = inspect(engine)
