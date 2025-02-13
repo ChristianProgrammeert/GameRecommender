@@ -1,6 +1,7 @@
 from queries import *
 from sqlalchemy.orm import Session
 from fastapi import FastAPI, Depends
+from algorithm import *
 
 app = FastAPI()
 
