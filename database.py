@@ -1,10 +1,8 @@
 from dotenv import load_dotenv
 import os
-
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy import inspect
-
 from models import Base
 
 load_dotenv()
@@ -21,8 +19,7 @@ try:
     engine = create_engine(DATABASE_URL)
     if engine is not None:
         print("Connected to database")
-        session = sessionmaker(autocommit=False, autoflush=False, bind=engine)
-        session = session()
+        SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
         Base.metadata.create_all(engine)
 
         inspector = inspect(engine)
