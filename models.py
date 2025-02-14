@@ -10,7 +10,6 @@ class Game(Base):
     name = Column(String(100), nullable=False, unique=True)
     mature_themes = Column(Boolean, default=False)
     open_world = Column(Boolean, default=False)
-    skill_based = Column(Boolean, default=False)
     multiplayer = Column(Boolean, default=False)
     length_in_hours = Column(Integer)
     description = Column(String(255), nullable=True)
@@ -24,6 +23,7 @@ class Genre(Base):
     name = Column(String(255), nullable=False, unique=True)
     rage_inducing = Column(Boolean, default=False)
     action_packed = Column(Boolean, default=False)
+    skill_based = Column(Boolean, default=False)
     description = Column(String(255), nullable=True)
 
     games = relationship("Game", secondary="games_genres", back_populates="genres")
