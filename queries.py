@@ -1,19 +1,19 @@
 from fastapi import FastAPI
-#from database import SessionLocal
+from database import SessionLocal
 from models import Genre, Game, GameGenre
 
 app = FastAPI()
 
-# def get_db():
-#     """Dependency to get database session"""
-#     db = SessionLocal()
-#     try:
-#         yield db
-#     finally:
-#         db.close()
+def get_db():
+    """Dependency to get database session"""
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
 
 def get_genres(db):
-    """Returns every entry from genre table"""
+    """Returns every entry from genres table"""
     genres = db.query(Genre).all()
     return genres
 
