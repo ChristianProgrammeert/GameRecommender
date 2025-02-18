@@ -4,6 +4,15 @@ from database import SessionLocal
 
 app = FastAPI()
 
+action_pack = True
+rage = True
+multiplay = False
+open_world = True
+mature = True
+skill_based = False
+length = 100
+
+
 # Dependency to get DB session
 def get_db():
     db = SessionLocal()
@@ -12,15 +21,7 @@ def get_db():
     finally:
         db.close()
 
-action_pack = True
-rage = False
-multiplay = False
-open_world = True
-mature = True
-skill_based = False
-length = 100
-
-def compute_genres(genres):
+def compute_genres(genres,rage,multiplayer,action_pack):
     result = []
     for  genre in genres:
         if genre.rage_inducing == rage and genre.multiplayer == multiplay and genre.action_packed == action_pack:
@@ -36,11 +37,11 @@ def compute_games(games):
             result.append(game)
     return result
 
-def link_gamesgenres(titles, names, connectiontbl, db):
+def link_games_genres(titles, names, connection_table):
     result = {}
     for genre in names:
         game_list = []
-        for connection in connectiontbl:
+        for connection in connection_table:
             if connection.genre_id == genre.id:
                 game_id = connection.game_id
                 for game in titles:

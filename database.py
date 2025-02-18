@@ -49,6 +49,6 @@ try:
         print("Existing Tables:", tables)
 
 except Exception as e:
-    print("we ran into a problem: " + str(e))
+    print("We ran into a problem: " + str(e))
 
 
