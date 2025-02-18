@@ -1,16 +1,8 @@
 from fastapi import FastAPI
-from models import Genre, Game, GameGenre
 from database import SessionLocal
 
 app = FastAPI()
 
-open_world = True
-mature = True
-skill_based = False
-length = 100
-
-
-# Dependency to get DB session
 def get_db():
     db = SessionLocal()
     try:
