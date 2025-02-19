@@ -27,14 +27,22 @@ def compute_games(games,mature_themes,open_world_,multiplayer):
     return result
 
 def link_games_genres(titles, names, connection_table):
-    result = {}
+    result = []
     for genre in names:
-        game_list = []
+        genre_info = {
+            "Name": genre.name,
+            "Description": genre.description,
+            "Games": []
+        }
         for connection in connection_table:
             if connection.genre_id == genre.id:
                 game_id = connection.game_id
                 for game in titles:
                     if game.id == game_id:
-                        game_list.append(game.name)
-        result[genre.name] = game_list
+                        game_info = {
+                            "Name": game.name,
+                            "Description": game.description,
+                        }
+                        genre_info["Games"].append(game_info)
+        result.append(genre_info)
     return result
