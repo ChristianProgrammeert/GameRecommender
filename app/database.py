@@ -6,7 +6,7 @@ from sqlalchemy.pool import QueuePool
 import time
 from sqlalchemy.exc import OperationalError
 from sqlalchemy import inspect
-from models import Base
+from app.models import Base
 
 load_dotenv()
 DB_PASSWORD = os.getenv('DB_PASSWORD')

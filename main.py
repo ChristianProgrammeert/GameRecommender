@@ -1,7 +1,7 @@
-from queries import *
+from app.queries import *
 from sqlalchemy.orm import Session
-from fastapi import FastAPI, Depends
-from algorithm import *
+from fastapi import Depends
+from app.algorithm import *
 from app import input_parser as parser
 
 app = FastAPI()
