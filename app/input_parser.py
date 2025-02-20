@@ -1,4 +1,4 @@
-from fastapi import HTTPException
+from app.error_handling import raise_request_error
 
 wanted_characters = ["0","1"]
 unexpected_characters_message = f"Answer includes unexpected characters. please use one of {wanted_characters}"
@@ -25,13 +25,13 @@ def check_characters(input_string):
         if _ in wanted_characters and input_string: #input_string returns true if the input string is not empty.
             continue
         else:
-            raise HTTPException(status_code = 400, detail = unexpected_characters_message)
+            raise_request_error(unexpected_characters_message)
     return True
 
 def check_length(input_string):
     """Checks whether the input string is of expected length."""
     if len(input_string) != wanted_length:
-        raise HTTPException(status_code = 400, detail = unexpected_length_message)
+        raise_request_error(unexpected_length_message)
     else:
         return True
 
