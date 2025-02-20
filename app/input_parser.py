@@ -6,7 +6,7 @@ wanted_length = 6
 unexpected_length_message = f"Answer is not {wanted_length} characters long"
 
 class Answers:
-    def __init__(self, action_packed,rage_inducing,multiplayer,open_world,skill_based,mature):
+    def __init__(self, rage_inducing,action_packed,skill_based,mature,open_world,multiplayer):
         self.is_rage_inducing = rage_inducing
         self.is_action_packed = action_packed
         self.is_skill_based = skill_based
@@ -48,3 +48,6 @@ def sort_input(sorting_input):
 def convert_into_class(list_input:list):
     """Converts a list of booleans into a class with model Answers"""
     return Answers(*list_input)
+
+TestClass = parse_input("100101")
+print(TestClass.is_rage_inducing,TestClass.is_action_packed,TestClass.is_skill_based,TestClass.is_mature,TestClass.is_open_world,TestClass.is_multiplayer)
