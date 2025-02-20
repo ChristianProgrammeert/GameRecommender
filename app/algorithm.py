@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from app.database import SessionLocal
+from database import SessionLocal
 
 app = FastAPI()
 
