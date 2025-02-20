@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from database import SessionLocal
+from app.database import SessionLocal
 from app.models import Genre, Game, GameGenre
 
 app = FastAPI()
