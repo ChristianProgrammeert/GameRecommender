@@ -28,23 +28,13 @@ jobs:
           pip install -r requirements.txt
           pip install aiosqlite  # for testing
 
-      - name: Install doctl
+      # Log in to DigitalOcean Container Registry
+      - name: Log in to DigitalOcean
+        env:
+          DIGITALOCEAN_ACCESS_TOKEN: ${{ secrets.API_TOKEN }}
+          DIGITALOCEAN_USERNAME: ${{ github.actor }}
         run: |
-          sudo snap install doctl
-          doctl version
-
-      - name: Authenticate with DigitalOcean
-        run: |
-          mkdir -p ~/.config
-          doctl auth init --context default --access-token ${{ secrets.API_TOKEN }}
-
-      - name: Create Container Registry (if it does not exist)
-        run: |
-          doctl registry get game-recommender || doctl registry create game-recommender --region ams3
-
-
-      - name: DigitalOcean Container Registry Login
-        run: doctl registry login
+          echo "${DIGITALOCEAN_ACCESS_TOKEN}" | docker login registry.digitalocean.com -u "${DIGITALOCEAN_USERNAME}" --password-stdin
 
       - name: Build & Push Docker Image
         env:
