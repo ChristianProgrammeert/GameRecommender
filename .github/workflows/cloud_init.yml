@@ -35,7 +35,7 @@ jobs:
 
       - name: Authenticate with DigitalOcean
         run: |
-          doctl auth init --context default --access-token ${{ secrets.CLOUD_API_TOKEN }}
+          doctl auth init --context default --access-token ${{ secrets.API_TOKEN }}
 
       - name: Create Container Registry (if it does not exist)
         run: |
@@ -50,7 +50,7 @@ jobs:
           COMMIT_SHA: ${{ github.sha }}
         run: |
           docker build -t registry.digitalocean.com/game-recommender/gameapi:${COMMIT_HASH} -t registry.digitalocean.com/game-recommender/gameapi:latest .
-          docker push --all-tags registry.digitalocean.com/game-recommender/gameapi  
+          docker push --all-tags registry.digitalocean.com/game-recommender/gameapi
 
       
 
