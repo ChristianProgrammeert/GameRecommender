@@ -16,17 +16,25 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
+      # Set up Python
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install aiosqlite  # for testing
+
       - name: Install doctl
         run: |
           sudo snap install doctl
-          sudo snap connect doctl:kube-config
-          sudo snap connect doctl:ssh-keys
-          sudo snap connect doctl:dot-docker
           doctl version
 
       - name: Authenticate with DigitalOcean
         run: |
-          mkdir -p ~/.config
           doctl auth init --context default --access-token ${{ secrets.CLOUD_API_TOKEN }}
 
       - name: Create Container Registry (if it does not exist)
@@ -38,6 +46,12 @@ jobs:
         run: doctl registry login
 
       - name: Build & Push Docker Image
+        env:
+          COMMIT_SHA: ${{ github.sha }}
         run: |
-          docker build -t registry.digitalocean.com/game-recommender/gameapi:latest .
-          docker push registry.digitalocean.com/game-recommender/gameapi:latest
+          docker build -t registry.digitalocean.com/game-recommender/gameapi:${COMMIT_HASH} -t registry.digitalocean.com/game-recommender/gameapi:latest .
+          docker push --all-tags registry.digitalocean.com/game-recommender/gameapi  
+
+      
+
+
