@@ -9,8 +9,8 @@ app = FastAPI()
 def endpoint_recommender(answers: str,db: Session = Depends(get_db)):
     AnswerClass = parser.parse_input(answers)
     return {"Recommendations":link_games_genres(
-        compute_games(get_games(db), AnswerClass.is_open_world, AnswerClass.is_mature, AnswerClass.is_multiplayer),
-        compute_genres(get_genres(db), AnswerClass.is_rage_inducing, AnswerClass.is_skill_based,AnswerClass.is_action_packed),
+        compute_games(get_games(db), AnswerClass.is_mature, AnswerClass.is_open_world, AnswerClass.is_multiplayer),
+        compute_genres(get_genres(db), AnswerClass.is_rage_inducing, AnswerClass.is_action_packed, AnswerClass.is_skill_based),
         get_connection_table(db))
     }
 @app.get("/genres")
