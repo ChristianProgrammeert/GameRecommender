@@ -48,6 +48,3 @@ def sort_input(sorting_input):
 def convert_into_class(list_input:list):
     """Converts a list of booleans into a class with model Answers"""
     return Answers(*list_input)
-
-TestClass = parse_input("100101")
-print(TestClass.is_rage_inducing,TestClass.is_action_packed,TestClass.is_skill_based,TestClass.is_mature,TestClass.is_open_world,TestClass.is_multiplayer)
