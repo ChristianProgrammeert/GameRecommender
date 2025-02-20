@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from database import SessionLocal
+from app.database import SessionLocal
 
 app = FastAPI()
 
@@ -10,17 +10,17 @@ def get_db():
     finally:
         db.close()
 
-def compute_genres(genres,rage,skill_base,action_pack):
+def compute_genres(genres,rage,action_pack,skill_base):
     result = []
     for  genre in genres:
-        if genre.rage_inducing == rage and genre.skill_based == skill_base and genre.action_packed == action_pack:
+        if genre.rage_inducing == rage and genre.action_packed == action_pack and genre.skill_based == skill_base:
             result.append(genre)
     return result
 
 def compute_games(games,mature_themes,open_world_,multiplayer):
     result = []
     for game in games:
-        if game.open_world == open_world_ and game.mature_themes == mature_themes and game.multiplayer == multiplayer: # and game.length_in_hours <= length
+        if game.mature_themes == mature_themes and game.open_world == open_world_ and game.multiplayer == multiplayer: # and game.length_in_hours <= length
             result.append(game)
     return result
 

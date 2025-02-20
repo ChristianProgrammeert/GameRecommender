@@ -6,13 +6,13 @@ wanted_length = 6
 unexpected_length_message = f"Answer is not {wanted_length} characters long"
 
 class Answers:
-    def __init__(self, action_packed,rage_inducing,multiplayer,open_world,skill_based,mature):
-        self.is_action_packed = action_packed
+    def __init__(self, rage_inducing,action_packed,skill_based,mature,open_world,multiplayer):
         self.is_rage_inducing = rage_inducing
-        self.is_multiplayer = multiplayer
-        self.is_open_world = open_world
+        self.is_action_packed = action_packed
         self.is_skill_based = skill_based
         self.is_mature = mature
+        self.is_open_world = open_world
+        self.is_multiplayer = multiplayer
 
 def parse_input(input_string):
     """Central function that combines all functions in this file. Easy to call from outside of file."""
