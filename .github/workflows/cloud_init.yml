@@ -38,7 +38,7 @@ jobs:
 
       - name: Build & Push Docker Image
         env:
-          COMMIT_SHA: ${{ github.sha }}
+          COMMIT_HASH: ${{ github.sha }}
         run: |
           docker build -t registry.digitalocean.com/game-recommender/gameapi:${COMMIT_HASH} -t registry.digitalocean.com/game-recommender/gameapi:latest .
           docker push --all-tags registry.digitalocean.com/game-recommender/gameapi
