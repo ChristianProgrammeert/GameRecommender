@@ -35,6 +35,7 @@ jobs:
 
       - name: Authenticate with DigitalOcean
         run: |
+          mkdir -p ~/.config
           doctl auth init --context default --access-token ${{ secrets.API_TOKEN }}
 
       - name: Create Container Registry (if it does not exist)
