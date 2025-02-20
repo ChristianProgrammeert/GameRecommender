@@ -2,11 +2,14 @@ from app.queries import *
 from sqlalchemy.orm import Session
 from fastapi import Depends
 from app.algorithm import *
+from app import error_handling as error
 from app import input_parser as parser
 
 app = FastAPI()
 @app.get("/recommendation")
-def endpoint_recommender(answers: str,db: Session = Depends(get_db)):
+def endpoint_recommender(answers = None,db: Session = Depends(get_db)):
+    if not answers:
+        error.raise_input_error()
     AnswerClass = parser.parse_input(answers)
     return {"Recommendations":link_games_genres(
         compute_games(get_games(db), AnswerClass.is_mature, AnswerClass.is_open_world, AnswerClass.is_multiplayer),
