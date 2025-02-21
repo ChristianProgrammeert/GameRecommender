@@ -26,10 +26,12 @@ engine = create_engine(
     poolclass=QueuePool,
     pool_size=10,
     max_overflow=20,
-    pool_timeout=60
+    pool_timeout=60,
+    pool_pre_ping=True
 )
+if engine is not None:
+    print("Connected to database")
 Base.metadata.create_all(engine)
-
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 inspector = inspect(engine)
@@ -43,3 +45,4 @@ def get_db():
         yield db
     finally:
         db.close()
+
