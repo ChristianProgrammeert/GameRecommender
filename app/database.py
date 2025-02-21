@@ -8,7 +8,10 @@ from sqlalchemy.exc import OperationalError
 from sqlalchemy import inspect
 from app.models import Base
 
-load_dotenv()
+#Only loads dotenv if variables aren't local yet. Local variables add extra safety to docker containers. this makes sure it still runs local.
+if not os.getenv("DB_USER"):
+    load_dotenv()
+
 DB_PASSWORD = os.getenv('DB_PASSWORD')
 DB_USER = os.getenv('DB_USER')
 DB_HOST = os.getenv('DB_HOST')

@@ -1,11 +1,10 @@
-
 name:
   Cloud Deployment
 on:
   push:
-    branches: [ "development" ]
+    branches: [ "main" ]
   pull_request:
-    branches: [ "development" ]
+    branches: [ "main" ]
 
 permissions:
   contents: read
@@ -15,9 +14,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
       - name: DigitalOcean Container Registry Login
         run:
           echo "${{ secrets.CLOUD_PASSWORD }}" | docker login -u "${{ secrets.CLOUD_EMAIL}}" --password-stdin registry.digitalocean.com
+
       - name: Building container
         run: |
           docker build -t registry.digitalocean.com/game-recommender/gameapi:Release .
