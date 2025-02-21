@@ -1,11 +1,10 @@
-
 name:
   Cloud Deployment
 on:
   push:
-    branches: [ "development" ]
+    branches: [ "main" ]
   pull_request:
-    branches: [ "development" ]
+    branches: [ "main" ]
 
 permissions:
   contents: read
@@ -15,9 +14,19 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
+      - name: Fill .env file
+        run: |
+          echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" >> .env
+          echo "DB_USER=${{secrets.DB_USER }}" >> .env
+          echo "DB_NAME=${{secrets.DB_NAME }}" >> .env
+          echo "DB_HOST=${{secrets.DB_HOST }}" >> .env
+          echo "DB_PORT=${{secrets.DB_PORT }}" >> .env
+
       - name: DigitalOcean Container Registry Login
         run:
           echo "${{ secrets.CLOUD_PASSWORD }}" | docker login -u "${{ secrets.CLOUD_EMAIL}}" --password-stdin registry.digitalocean.com
+
       - name: Building container
         run: |
           docker build -t registry.digitalocean.com/game-recommender/gameapi:Release .
