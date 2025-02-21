@@ -28,7 +28,7 @@ try:
     pool_size=10,  # Active connections in the pool
     max_overflow=20,  # Extra connections allowed beyond the pool size
     pool_timeout=30  # Wait time before throwing a timeout error
-)
+    )
 
     MAX_RETRIES = 5
 
@@ -51,7 +51,15 @@ try:
         tables = inspector.get_table_names()
         print("Existing Tables:", tables)
 
+
 except Exception as e:
     print("We ran into a problem: " + str(e))
 
+def get_db():
+    """Dependency to get database session"""
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
 
