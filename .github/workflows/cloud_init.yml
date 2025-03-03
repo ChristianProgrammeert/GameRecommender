@@ -1,4 +1,5 @@
-
+name:
+  Cloud Deployment
 on:
   push:
     branches: [ "development" ]
@@ -38,27 +39,10 @@ jobs:
         env:
           COMMIT_HASH: ${{ github.sha }}
         run: |
-          docker build -t registry.digitalocean.com/game-recommender/gameapi:${COMMIT_HASH} -t registry.digitalocean.com/game-recommender/gameapi:latest .
-          docker push --all-tags registry.digitalocean.com/game-recommender/gameapi
+          docker build -t registry.digitalocean.com/game-recommender/testapi:${COMMIT_HASH} -t registry.digitalocean.com/game-recommender/testapi:latest .
+          docker push --all-tags registry.digitalocean.com/game-recommender/testapi
 
-      # Deploy to DigitalOcean Kubernetes
-      - name: Set up kubectl
-        uses: azure/setup-kubectl@v1
-        with:
-          version: 'latest'
 
-      - name: Configure kubeconfig
-        env:
-          KUBE_CONFIG_DATA: ${{ secrets.KUBECONFIG }}
-        run: |
-          mkdir -p $HOME/.kube
-          echo "${KUBE_CONFIG_DATA}" > $HOME/.kube/config
-
-      - name: Update Deployment with New Image
-        env:
-          COMMIT_HASH: ${{ github.sha }}
-        run: |
-          kubectl set image deployment/website website=registry.digitalocean.com/devops-cicd/fast-api:${COMMIT_HASH} -n ns-website-db
       
 
 
