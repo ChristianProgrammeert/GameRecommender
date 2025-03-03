@@ -1,5 +1,5 @@
 name:
-  Cloud Deployment
+  Test Deployment
 on:
   push:
     branches: [ "development" ]
