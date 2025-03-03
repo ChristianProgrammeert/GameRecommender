@@ -1,10 +1,10 @@
 name:
-  Test Deployment
+  Cloud Deployment
 on:
   push:
-    branches: [ "development" ]
+    branches: [ "main" ]
   pull_request:
-    branches: [ "development" ]
+    branches: [ "main" ]
 
 permissions:
   contents: read
@@ -39,8 +39,8 @@ jobs:
         env:
           COMMIT_HASH: ${{ github.sha }}
         run: |
-          docker build -t registry.digitalocean.com/game-recommender/testapi:${COMMIT_HASH} -t registry.digitalocean.com/game-recommender/testapi:latest .
-          docker push --all-tags registry.digitalocean.com/game-recommender/testapi
+          docker build -t registry.digitalocean.com/game-recommender/gameapi:${COMMIT_HASH} -t registry.digitalocean.com/game-recommender/gameapi:latest .
+          docker push --all-tags registry.digitalocean.com/game-recommender/gameapi
 
 
       
