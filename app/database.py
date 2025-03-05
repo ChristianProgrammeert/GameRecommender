@@ -3,13 +3,11 @@ import os
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.pool import QueuePool
-import time
-from sqlalchemy.exc import OperationalError
 from sqlalchemy import inspect
 from app.models import Base
 
 #Only loads dotenv if variables aren't local yet. Local variables add extra safety to docker containers. this makes sure it still runs local.
-if not os.getenv("DB_USER"):
+if not os.getenv("DATABASE_URL"):
     load_dotenv()
 
 DATABASE_URL = os.getenv('DATABASE_URL')
