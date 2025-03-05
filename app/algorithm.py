@@ -33,5 +33,7 @@ def link_games_genres(titles, names, connection_table):
                             "Description": game.description,
                         }
                         genre_info["Games"].append(game_info)
+        if len(genre_info["Games"]) == 0:
+            genre_info["Games"].append("No games found")
         result.append(genre_info)
     return result
