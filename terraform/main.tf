@@ -39,6 +39,12 @@ resource "kubernetes_namespace" "app_namespace" {
   }
 }
 
+resource "kubernetes_namespace" "monitoring_namespace" {
+  metadata {
+    name = var.monitoring_namespace
+  }
+}
+
 resource "kubernetes_secret" "docker_registry" {
   metadata {
     name      = "docker-registry"
@@ -56,6 +62,41 @@ resource "kubernetes_secret" "docker_registry" {
         }
       }
     })
+  }
+}
+
+resource "kubernetes_config_map" "grafana_dashboard" {
+  metadata {
+    name      = "fastapi-cluster-dashboard"
+    namespace = kubernetes_namespace.monitoring_namespace.metadata[0].name
+    labels = {
+      grafana_dashboard = "1"
+    }
+  }
+
+  data = {
+    #"fastapi-cluster-dashboard.json" = file("${path.module}/grafana/dashboards/fastapi-cluster-dashboard.json")
+  }
+}
+
+
+# Helm Release: Prometheus
+resource "helm_release" "prometheus" {
+  chart      = "kube-prometheus-stack"
+  name       = "prometheus"
+  namespace  = kubernetes_namespace.monitoring_namespace.metadata[0].name
+  repository = "https://prometheus-community.github.io/helm-charts"
+  version    = "56.3.0"
+  #values = [file("${path.module}/values.yaml")]
+
+  set {
+    name  = "podSecurityPolicy.enabled"
+    value = true
+  }
+
+  set {
+    name  = "server.persistentVolume.enabled"
+    value = false
   }
 }
 
@@ -96,6 +137,10 @@ resource "kubernetes_deployment" "website" {
           image_pull_policy = "Always"
           port {
             container_port = 8000
+          }
+          env {
+            name  = "DATABASE_URL"
+            value = "postgresql://${var.db_user}:${var.db_password}@${var.db_host}:${var.db_port}/${var.db_name}?sslmode=require&connect_timeout=60"
           }
         }
           image_pull_secrets {
