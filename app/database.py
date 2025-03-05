@@ -10,9 +10,7 @@ from app.models import Base
 if not os.getenv("DATABASE_URL"):
     load_dotenv()
 
-
-# Connection timeout is set to 60 seconds because it kept timing out
-DATABASE_URL = os.getenv("DATABASE_URL")
+DATABASE_URL = os.getenv('DATABASE_URL')
 
 engine = create_engine(
     DATABASE_URL,
