@@ -3,7 +3,6 @@ from sqlalchemy.orm import Session
 from prometheus_client import Counter, Summary, generate_latest, CONTENT_TYPE_LATEST
 from starlette.responses import Response
 from functools import wraps
-from functools import lru_cache
 from app.database import get_db
 from fastapi import Depends
 from fastapi import FastAPI
