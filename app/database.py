@@ -1,10 +1,9 @@
 from dotenv import load_dotenv
 import os
-from sqlalchemy import create_engine
+from sqlalchemy import inspect, create_engine
 from sqlalchemy.orm import sessionmaker
-from sqlalchemy.pool import QueuePool
-from sqlalchemy import inspect
 from app.models import Base
+from app.queries import add_genres
 
 #Only loads dotenv if variables aren't local yet. Local variables add extra safety to docker containers. this makes sure it still runs local.
 if not os.getenv("DATABASE_URL"):
@@ -13,12 +12,7 @@ if not os.getenv("DATABASE_URL"):
 DATABASE_URL = os.getenv('DATABASE_URL')
 
 engine = create_engine(
-    DATABASE_URL,
-    poolclass=QueuePool,
-    pool_size=10,
-    max_overflow=20,
-    pool_timeout=60,
-    pool_pre_ping=True
+    DATABASE_URL
 )
 if engine is not None:
     print("Connected to database")
@@ -28,6 +22,10 @@ SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 inspector = inspect(engine)
 tables = inspector.get_table_names()
 print("Existing Tables:", tables)
+columns = inspector.get_columns("genres")
+if not columns:
+    print("Adding genres to database")
+    add_genres(SessionLocal())
 
 def get_db():
     """Dependency to get database session"""
