@@ -1,11 +1,9 @@
 import app.queries as queries
 from sqlalchemy.orm import Session
 from app.database import get_db
-from fastapi import Depends
-from fastapi import FastAPI
+from fastapi import FastAPI, Depends
 import app.algorithm as algorithm
-from app import error_handling as error
-from app import input_parser as parser
+from app import error_handling as error, input_parser as parser
 
 app = FastAPI()
 @app.get("/recommendation")
