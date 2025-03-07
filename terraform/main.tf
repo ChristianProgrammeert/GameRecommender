@@ -19,6 +19,15 @@ provider "kubernetes" {
   cluster_ca_certificate = base64decode(digitalocean_kubernetes_cluster.gr_cluster.kube_config[0].cluster_ca_certificate)
 }
 
+provider "helm" {
+  kubernetes {
+    host                   = digitalocean_kubernetes_cluster.gr_cluster.endpoint
+    token                  = digitalocean_kubernetes_cluster.gr_cluster.kube_config[0].token
+    cluster_ca_certificate = base64decode(digitalocean_kubernetes_cluster.gr_cluster.kube_config[0].cluster_ca_certificate)
+  }
+}
+
+
 # Kubernetes-cluster aanmaken
 resource "digitalocean_kubernetes_cluster" "gr_cluster" {
   name    = var.cluster_name
@@ -67,15 +76,11 @@ resource "kubernetes_secret" "docker_registry" {
 
 resource "kubernetes_config_map" "grafana_dashboard" {
   metadata {
-    name      = "fastapi-cluster-dashboard"
+    name      = "gameapi-cluster-dashboard"
     namespace = kubernetes_namespace.monitoring_namespace.metadata[0].name
     labels = {
       grafana_dashboard = "1"
     }
-  }
-
-  data = {
-    #"fastapi-cluster-dashboard.json" = file("${path.module}/grafana/dashboards/fastapi-cluster-dashboard.json")
   }
 }
 
@@ -87,7 +92,7 @@ resource "helm_release" "prometheus" {
   namespace  = kubernetes_namespace.monitoring_namespace.metadata[0].name
   repository = "https://prometheus-community.github.io/helm-charts"
   version    = "56.3.0"
-  #values = [file("${path.module}/values.yaml")]
+  values = [file("${path.module}/values.yaml")]
 
   set {
     name  = "podSecurityPolicy.enabled"
@@ -97,6 +102,11 @@ resource "helm_release" "prometheus" {
   set {
     name  = "server.persistentVolume.enabled"
     value = false
+  }
+
+    set {
+    name  = "grafana.adminPassword"
+    value = var.grafana_admin_password
   }
 }
 
@@ -173,3 +183,4 @@ resource "kubernetes_service" "gameapi-loadbalancer" {
     type = "LoadBalancer"
   }
 }
+
