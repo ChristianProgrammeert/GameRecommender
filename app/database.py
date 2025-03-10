@@ -13,12 +13,7 @@ if not os.getenv("DATABASE_URL"):
 DATABASE_URL = os.getenv('DATABASE_URL')
 
 engine = create_engine(
-    DATABASE_URL,
-    poolclass=QueuePool,
-    pool_size=10,
-    max_overflow=20,
-    pool_timeout=60,
-    pool_pre_ping=True
+    DATABASE_URL
 )
 if engine is not None:
     print("Connected to database")
