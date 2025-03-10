@@ -23,10 +23,10 @@ async def metrics():
 def track_metrics(endpoint: str):
     def decorator(func):
         @wraps(func)  # Preserve the original function's signature
-        async def wrapper(*args, **kwargs):
+        def wrapper(*args, **kwargs):
             REQUEST_COUNT.labels(method="GET", endpoint=endpoint, status="200").inc()
             with REQUEST_LATENCY.time():
-                return await func(*args, **kwargs)
+                return func(*args, **kwargs)
         return wrapper
     return decorator
 
