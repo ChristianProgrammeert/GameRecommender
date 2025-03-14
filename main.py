@@ -24,10 +24,9 @@ def track_metrics(endpoint: str):
     def decorator(func):
         @wraps(func)  # Preserve the original function's signature
         def wrapper(*args, **kwargs):
-            #search for the specific response code instead of only catching status code 200
-            response = func(*args, **kwargs)
-            status_code = response.status_code
-            REQUEST_COUNT.labels(method="GET", endpoint=endpoint, status=str(status_code)).inc()
+            REQUEST_COUNT.labels(method="GET", endpoint=endpoint, status="200").inc()
+            REQUEST_COUNT.labels(method="GET", endpoint=endpoint, status="400").inc()
+            REQUEST_COUNT.labels(method="GET", endpoint=endpoint, status="500").inc()
             with REQUEST_LATENCY.time():
                 return func(*args, **kwargs)
         return wrapper
