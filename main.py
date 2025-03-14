@@ -24,14 +24,9 @@ def track_metrics(endpoint: str):
     def decorator(func):
         @wraps(func)  # Preserve the original function's signature
         def wrapper(*args, **kwargs):
-            # Start timing the request
-            with REQUEST_LATENCY.labels(method="GET", endpoint=endpoint).time():
-                # Call the original function
-                response = func(*args, **kwargs)
-            # Assuming the response has a status_code attribute
-            status_code = getattr(response, 'status_code', 'unknown')
-            REQUEST_COUNT.labels(method="GET", endpoint=endpoint, status=str(status_code)).inc()
-            return response
+            REQUEST_COUNT.labels(method="GET", endpoint=endpoint).inc()
+            with REQUEST_LATENCY.time():
+                return func(*args, **kwargs)
         return wrapper
     return decorator
 
