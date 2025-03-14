@@ -16,7 +16,7 @@ REQUEST_LATENCY = Summary("http_request_latency_seconds", "Request latency in se
 app = FastAPI()
 
 @app.get("/metrics")
-async def metrics():
+def metrics():
     return Response(content=generate_latest(), media_type=CONTENT_TYPE_LATEST)
 
 # Decorator for tracking Prometheus metrics
@@ -24,9 +24,11 @@ def track_metrics(endpoint: str):
     def decorator(func):
         @wraps(func)  # Preserve the original function's signature
         def wrapper(*args, **kwargs):
-            REQUEST_COUNT.labels(method="GET", endpoint=endpoint, status="200").inc()
             with REQUEST_LATENCY.time():
-                return func(*args, **kwargs)
+                response = func(*args, **kwargs)
+            status_code = response.status_code
+            REQUEST_COUNT.labels(method="GET", endpoint=endpoint, status=str(status_code)).inc()
+            return response
         return wrapper
     return decorator
 
