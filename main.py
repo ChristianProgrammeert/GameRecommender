@@ -25,8 +25,6 @@ def track_metrics(endpoint: str):
         @wraps(func)  # Preserve the original function's signature
         def wrapper(*args, **kwargs):
             REQUEST_COUNT.labels(method="GET", endpoint=endpoint, status="200").inc()
-            REQUEST_COUNT.labels(method="GET", endpoint=endpoint, status="400").inc()
-            REQUEST_COUNT.labels(method="GET", endpoint=endpoint, status="500").inc()
             with REQUEST_LATENCY.time():
                 return func(*args, **kwargs)
         return wrapper
