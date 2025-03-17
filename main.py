@@ -1,11 +1,9 @@
 import app.queries as queries
 from sqlalchemy.orm import Session
 from prometheus_client import Counter, Summary, generate_latest, CONTENT_TYPE_LATEST
-from starlette.responses import Response
 from functools import wraps
 from app.database import get_db
-from fastapi import Depends
-from fastapi import FastAPI
+from fastapi import FastAPI, Depends, Response, Request, HTTPException
 import app.algorithm as algorithm
 from app import error_handling as error
 from app import input_parser as parser
@@ -19,14 +17,27 @@ app = FastAPI()
 def metrics():
     return Response(content=generate_latest(), media_type=CONTENT_TYPE_LATEST)
 
-# Decorator for tracking Prometheus metrics
+
 def track_metrics(endpoint: str):
     def decorator(func):
-        @wraps(func)  # Preserve the original function's signature
+        @wraps(func)
         def wrapper(*args, **kwargs):
-            REQUEST_COUNT.labels(method="GET", endpoint=endpoint, status="200").inc()
-            with REQUEST_LATENCY.time():
-                return func(*args, **kwargs)
+            try:
+                with REQUEST_LATENCY.time():
+                    response = func(*args, **kwargs)
+                    status_code = response.status_code if isinstance(response, Response) else 200
+            except HTTPException as e:
+                # Capture expected errors
+                # Like 400, 422
+                status_code = e.status_code
+                response = Response(content=e.detail, status_code=e.status_code)
+            except Exception:
+                # Capture unexpected errors
+                status_code = 500
+                response = Response(status_code=500)
+            # Log the status code for Prometheus
+            REQUEST_COUNT.labels(method="GET", endpoint=endpoint, status=str(status_code)).inc()
+            return response
         return wrapper
     return decorator
 
@@ -54,5 +65,5 @@ def endpoint_games(db: Session = Depends(get_db)):
 
 @app.get("/")
 def show_online():
-    return {"Welcome to GameRecommender API, see /docs for available endpoints."}
+    return {"Welcome to GameRecommender API, see /docs for available endpoints. test"}
 
