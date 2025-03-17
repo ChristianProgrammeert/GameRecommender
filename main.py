@@ -8,6 +8,7 @@ import app.algorithm as algorithm
 from app import error_handling as error
 from app import input_parser as parser
 
+VERSION = "1.0"
 # Prometheus metrics
 REQUEST_COUNT = Counter("http_requests_total", "Total HTTP requests", ["method", "endpoint", "status"])
 REQUEST_LATENCY = Summary("http_request_latency_seconds", "Request latency in seconds")
@@ -65,5 +66,5 @@ def endpoint_games(db: Session = Depends(get_db)):
 
 @app.get("/")
 def show_online():
-    return {"Welcome to GameRecommender API, see /docs for available endpoints. test"}
+    return {f"Welcome to GameRecommender API versie {VERSION}, see /docs for available endpoints."}
 
