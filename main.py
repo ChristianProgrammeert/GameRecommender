@@ -32,10 +32,6 @@ def track_metrics(endpoint: str):
                 # Like 400, 422
                 status_code = e.status_code
                 response = Response(content=e.detail, status_code=e.status_code)
-            except Exception:
-                # Capture unexpected errors
-                status_code = 500
-                response = Response(status_code=500)
             # Log the status code for Prometheus
             REQUEST_COUNT.labels(method="GET", endpoint=endpoint, status=str(status_code)).inc()
             return response
