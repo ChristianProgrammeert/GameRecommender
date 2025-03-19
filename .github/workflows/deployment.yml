@@ -1,5 +1,5 @@
 name:
-  Cloud Deployment
+  Deployment
 on:
   push:
     branches: [ "main" ]
@@ -41,7 +41,7 @@ jobs:
         run: |
           docker build -t registry.digitalocean.com/game-recommender/gameapi:${COMMIT_HASH} -t registry.digitalocean.com/game-recommender/gameapi:latest .
           docker push --all-tags registry.digitalocean.com/game-recommender/gameapi
-          
+
       # Deploy to DigitalOcean Kubernetes
       - name: Set up kubectl
         uses: azure/setup-kubectl@v1
@@ -60,8 +60,5 @@ jobs:
           COMMIT_HASH: ${{ github.sha }}
         run: |
           kubectl set image deployment/website website=registry.digitalocean.com/game-recommender/gameapi:${COMMIT_HASH} -n game-recommender 
-
-
-      
 
 
