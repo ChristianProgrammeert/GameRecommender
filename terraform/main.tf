@@ -82,6 +82,10 @@ resource "kubernetes_config_map" "grafana_dashboard" {
       grafana_dashboard = "1"
     }
   }
+
+    data = {
+    "cluster-monitoring-dashboard.json" = file("${path.module}/grafana/dashboards/cluster-monitoring-dashboard.json")
+  }
 }
 
 
@@ -183,4 +187,3 @@ resource "kubernetes_service" "gameapi-loadbalancer" {
     type = "LoadBalancer"
   }
 }
-

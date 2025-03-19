@@ -10,7 +10,7 @@ prometheus:
       - job_name: 'python-api'
         scrape_interval: 15s
         static_configs:
-          - targets: ['gameapi-loadbalancer.game_recommender.svc.cluster.local:80']
+          - targets: ['gameapi-loadbalancer.game-recommender.svc.cluster.local:80']
 
 
 server:

@@ -1,10 +1,5 @@
 from app.error_handling import raise_request_error
 
-wanted_characters = ["0","1"]
-unexpected_characters_message = f"Answer includes unexpected characters. please use one of {wanted_characters}"
-wanted_length = 6
-unexpected_length_message = f"Answer is not {wanted_length} characters long"
-
 class Answers:
     def __init__(self, rage_inducing,action_packed,skill_based,mature,open_world,multiplayer):
         self.is_rage_inducing = rage_inducing
@@ -14,36 +9,22 @@ class Answers:
         self.is_open_world = open_world
         self.is_multiplayer = multiplayer
 
-def parse_input(input_string):
-    """Central function that combines all functions in this file. Easy to call from outside of file."""
-    if check_characters(input_string) and check_length(input_string):
-        return convert_into_class(sort_input(input_string))
+error_message = "Please make sure all values are entered with booleans. rage_inducing | action_packed | skill_based | mature_themes | open_world | multiplayer"
 
-def check_characters(input_string):
-    """Checks whether the input string only contains useful characters. Gives user feedback if input does not meet requirements."""
-    for _ in input_string:
-        if _ in wanted_characters and input_string: #input_string returns true if the input string is not empty.
+def parse_input(input_list):
+    """Central function that combines all functions in this file. Easy to call from outside of file."""
+    if check_inputs(input_list):
+        return convert_into_class(input_list)
+    else: raise_request_error(error_message)
+
+def check_inputs(input_list):
+    """Checks whether all values have been given and if they are a boolean"""
+    for _ in input_list:
+        if _ is not None and type(_) is bool:
             continue
         else:
-            raise_request_error(unexpected_characters_message)
+            return False
     return True
-
-def check_length(input_string):
-    """Checks whether the input string is of expected length."""
-    if len(input_string) != wanted_length:
-        raise_request_error(unexpected_length_message)
-    else:
-        return True
-
-def sort_input(sorting_input):
-    """Converts string input into a list of booleans."""
-    sorted_output = []
-    for i in sorting_input:
-        sorted_input = False
-        if i == wanted_characters[1]:
-            sorted_input = True
-        sorted_output.append(sorted_input)
-    return sorted_output
 
 def convert_into_class(list_input:list):
     """Converts a list of booleans into a class with model Answers"""
