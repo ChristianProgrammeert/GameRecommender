@@ -7,6 +7,7 @@ import app.algorithm as algorithm
 from fastapi.exceptions import RequestValidationError
 from app import error_handling as error
 from app import input_parser as parser
+from app.database import get_db
 
 VERSION = "1.0"
 # Prometheus metrics
