@@ -18,7 +18,6 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 32,
   "links": [],
   "liveNow": false,
   "panels": [
@@ -707,7 +706,7 @@
             "uid": "c0c2d72b-134a-489e-9edf-3060d7a31c0c"
           },
           "editorMode": "code",
-          "expr": "sum by (status)(increase(http_requests_total{endpoint=\"/recommendation\",status=~\"4..|5..\"}[1m]))\r\n",
+          "expr": "sum by (status)(rate(http_requests_total{endpoint=\"/recommendation\",status=~\"4..|5..\"}[1m]))\r\n",
           "instant": false,
           "legendFormat": "__auto",
           "range": true,
@@ -907,6 +906,6 @@
   "timezone": "",
   "title": "gamerecommender monitoring",
   "uid": "b2f095ce-bdf5-4cf5-9ce5-4a0fe519822c",
-  "version": 25,
+  "version": 26,
   "weekStart": ""
 }
