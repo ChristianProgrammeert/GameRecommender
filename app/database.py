@@ -9,7 +9,7 @@ if not os.getenv("DATABASE_URL"):
     load_dotenv()
 
 #When there is no DATABASE_URL set, it will use an in-memory SQLite database for testing
-DATABASE_URL = os.getenv('DATABASE_URL')
+DATABASE_URL = os.getenv('DATABASE_URL', 'sqlite:///./test.db')
 
 engine = create_engine(
     DATABASE_URL
