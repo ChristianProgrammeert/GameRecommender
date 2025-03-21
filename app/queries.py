@@ -17,4 +17,3 @@ def get_connection_table(db):
     """Returns the entire connection table"""
     connection_table = db.query(GameGenre).all()
     return connection_table
-
