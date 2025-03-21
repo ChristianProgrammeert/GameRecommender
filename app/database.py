@@ -1,14 +1,14 @@
-from dotenv import load_dotenv
 import os
-from sqlalchemy import create_engine
+from dotenv import load_dotenv
+from sqlalchemy import inspect, create_engine
 from sqlalchemy.orm import sessionmaker
-from sqlalchemy import inspect
 from app.models import Base
 
 #Only loads dotenv if variables aren't local yet. Local variables add extra safety to docker containers. this makes sure it still runs local.
 if not os.getenv("DATABASE_URL"):
     load_dotenv()
 
+#When there is no DATABASE_URL set, it will use an in-memory SQLite database for testing
 DATABASE_URL = os.getenv('DATABASE_URL')
 
 engine = create_engine(

@@ -1,6 +1,3 @@
-from fastapi import FastAPI
-app = FastAPI()
-
 def compute_genres(genres,rage,action_pack,skill_base):
     """Loops through genres and compares its characteristics with input. Returns matches."""
     result = []
