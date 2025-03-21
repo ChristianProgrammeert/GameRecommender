@@ -20,9 +20,9 @@ def setup_and_teardown():
     db = TestSessionLocal()
     inspector = inspect(test_engine)
     tables = inspector.get_table_names()
-    print("Existing Tables:", tables)
+    print("Existing Test Tables:", tables)
     if db.query(Genre).count() == 0:
-        print("Adding genres to test database")
+        print("Adding genres to Test Database")
         add_genres(db)
     db.commit()
     print(db)
