@@ -66,7 +66,7 @@ def endpoint_recommender(rage_inducing:bool = None,action_packed:bool = None, sk
 @track_metrics("/genres")
 def endpoint_genres(db: Session = Depends(get_db)):
     """Endpoint that returns every entry in the genres table.
-    Returns: JSON with games"""
+    Returns: JSON with genres"""
     genres = queries.get_genres(db)
     return {"data":genres}
 @app.get("/games")
