@@ -32,4 +32,4 @@ class TestEntireFile(unittest.TestCase):
     def test_wrong_input(self):
         with self.assertRaises(HTTPException) as _:
             TestClass = parser.parse_input([1,"a",False,{"Name":"Test"}])
-        self.assertEqual(_.exception.status_code,422,msg = "Incorrect or no error raised with wrong datatypes")
+        self.assertEqual(_.exception.status_code,400,msg = "Incorrect or no error raised with wrong datatypes")
