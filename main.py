@@ -10,6 +10,7 @@ from app import input_parser as parser
 from app.database import get_db
 
 VERSION = "1.1.3"
+
 # Prometheus metrics
 REQUEST_COUNT = Counter("http_requests_total", "Total HTTP requests", ["method", "endpoint", "status"])
 REQUEST_LATENCY = Summary("http_request_latency_seconds", "Request latency in seconds")
@@ -66,7 +67,7 @@ def endpoint_recommender(rage_inducing:bool = None,action_packed:bool = None, sk
 @track_metrics("/genres")
 def endpoint_genres(db: Session = Depends(get_db)):
     """Endpoint that returns every entry in the genres table.
-    Returns: JSON with games"""
+    Returns: JSON with genres"""
     genres = queries.get_genres(db)
     return {"data":genres}
 @app.get("/games")
@@ -79,5 +80,5 @@ def endpoint_games(db: Session = Depends(get_db)):
 
 @app.get("/")
 def show_online():
-    return {f"Welcome to GameRecommender API versie {VERSION}, see /docs for available endpoints."}
+    return {f"Welcome to GameRecommender API version: {VERSION}, see /docs for available endpoints."}
 
