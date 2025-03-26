@@ -9,7 +9,8 @@ from app import error_handling as error
 from app import input_parser as parser
 from app.database import get_db
 
-VERSION = "1.1.2"
+VERSION = "1.1.3"
+
 # Prometheus metrics
 REQUEST_COUNT = Counter("http_requests_total", "Total HTTP requests", ["method", "endpoint", "status"])
 REQUEST_LATENCY = Summary("http_request_latency_seconds", "Request latency in seconds")
